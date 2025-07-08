@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Buscar Activos – INTEINSA</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      background-color: #111;
+      font-family: 'Segoe UI', sans-serif;
+      color: #00ffee;
+      text-align: center;
+      margin: 0;
+      padding: 20px;
+    }
+
+    .contenedor {
+      background: #1a1a1a;
+      padding: 30px;
+      margin: auto;
+      margin-top: 40px;
+      max-width: 900px;
+      border-radius: 15px;
+      box-shadow: 0 0 20px #00ffee;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header img {
+      height: 100px;
+      max-width: 90%;
+    }
+
+    .header h2 {
+      color: #00f5d4;
+      margin-top: 10px;
+      font-size: 26px;
+    }
+
+    input[type="text"] {
+      width: 60%;
+      padding: 10px;
+      font-size: 16px;
+      background: #2a2a2a;
+      color: white;
+      border: 1px solid #00ffee;
+      border-radius: 8px;
+    }
+
+    button {
+      padding: 10px 20px;
+      background-color: #00ffee;
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 8px;
+      margin-left: 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00e6cc;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 30px;
+    }
+
+    th, td {
+      padding: 12px;
+      border: 1px solid #444;
+      color: #eee;
+    }
+
+    th {
+      background-color: #00c7c7;
+      color: black;
+    }
+
+    tr:nth-child(even) {
+      background-color: #222;
+    }
+
+    .sin-resultados {
+      margin-top: 20px;
+      color: #ffaa00;
+      font-style: italic;
+    }
+
+    .volver {
+      display: inline-block;
+      margin-top: 30px;
+      color: #00ffee;
+      text-decoration: none;
+      font-size: 14px;
+    }
+
+    .volver:hover {
+      text-decoration: underline;
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 15px;
+      color: #00f5d4;
+    }
+
+    footer hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(to right, #00f5d4, #00ffcc, #00f5d4);
+      margin: 20px auto;
+      width: 60%;
+    }
+
+    footer div {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 768px) {
+      input[type="text"] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+
+      button {
+        width: 100%;
+        margin: 0;
+      }
+
+      .contenedor {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="contenedor">
+    <div class="header">
+      <img src="/static/img/logo_inteinsa.png" alt="Logo INTEINSA">
+      <h2>🔎 Buscar Activo</h2>
+    </div>
+
+    <form method="post">
+      <input type="text" name="criterio" placeholder="Buscar por usuario o equipo..." required>
+      <button type="submit">Buscar</button>
+    </form>
+
+    {% if activos and activos|length > 0 %}
+      <table>
+        <thead>
+          <tr>
+            <th>Código</th>
+            <th>Descripción</th>
+            <th>Modelo</th>
+            <th>Serial</th>
+            <th>Usuario</th>
+            <th>Equipo</th>
+            <th>Observaciones</th>
+            <th>Asignado</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in activos %}
+            <tr>
+              <td>{{ a[0] }}</td>
+              <td>{{ a[1] }}</td>
+              <td>{{ a[2] }}</td>
+              <td>{{ a[3] }}</td>
+              <td>{{ a[4] }}</td>
+              <td>{{ a[5] }}</td>
+              <td>{{ a[6] }}</td>
+              <td>{{ '✅' if a[7] else '❌' }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% elif criterio %}
+      <div class="sin-resultados">No se encontraron activos para: <strong>{{ criterio }}</strong></div>
+    {% endif %}
+
+    <a href="/" class="volver">🏠 Volver al inicio</a>
+  </div>
+
+  <footer>
+    <hr>
+    <div>
+      &copy; 2025 <strong style="color: #ffffff;">INTEINSA</strong> – Desarrollado por el <strong style="color: #ffffff;">Área de Sistemas</strong><br>
+      <span style="font-size: 13px; color: #aaaaaa;">Todos los derechos reservados.</span>
+    </div>
+  </footer>
+
+</body>
+</html>

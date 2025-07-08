@@ -1,0 +1,5 @@
+DB_HOST = "localhost"
+DB_PORT = "5432"
+DB_NAME = "inventario"
+DB_USER = "postgres"
+DB_PASSWORD = "50p0rt3"

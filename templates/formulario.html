@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Registro de Activos – INTEINSA</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 30px;
+        }
+        form {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007b5e;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #005f46;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+    <form method="post">
+        <h2>Registrar Activo</h2>
+        <input type="text" name="codigo" placeholder="Código del producto" required>
+        <input type="text" name="descripcion" placeholder="Descripción del producto" required>
+        <input type="text" name="usuario" placeholder="Nombre del usuario" required>
+        <input type="text" name="equipo" placeholder="Código del equipo" required>
+        <textarea name="observaciones" placeholder="Observaciones adicionales"></textarea>
+        <button type="submit">Registrar</button>
+    </form>
+</body>
+</html>

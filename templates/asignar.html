@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Asignar Activo – INTEINSA</title>
+  <script src="https://unpkg.com/html5-qrcode" defer></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #121212;
+      color: #f0f0f0;
+      padding: 20px;
+      margin: 0;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 25px;
+    }
+
+    .header img {
+      height: 100px;
+      max-width: 80%;
+    }
+
+    .header h2 {
+      color: #00f5d4;
+      margin-top: 10px;
+      font-size: 26px;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: auto;
+      background-color: #1e1e1e;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 0 18px #00f5d4;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: none;
+      border-radius: 6px;
+      font-size: 15px;
+      background-color: #2b2b2b;
+      color: #fff;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    .btn {
+      background-color: #00f5d4;
+      color: #000;
+      border: none;
+      padding: 12px;
+      width: 100%;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #00e0be;
+    }
+
+    #reader {
+      width: 100%;
+      margin-bottom: 15px;
+    }
+
+    .nav-links {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .nav-links a {
+      color: #9f9fff;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .success {
+      background-color: #2e7d32;
+      color: #fff;
+      padding: 12px;
+      border-radius: 6px;
+      margin-bottom: 15px;
+      text-align: center;
+    }
+
+    footer {
+      margin-top: 50px;
+      text-align: center;
+      font-size: 15px;
+      color: #00f5d4;
+    }
+
+    footer hr {
+      border: none;
+      height: 1px;
+      background: linear-gradient(to right, #00f5d4, #00ffcc, #00f5d4);
+      margin: 20px auto;
+      width: 60%;
+    }
+
+    footer div {
+      opacity: 0.85;
+    }
+
+    @media (max-width: 600px) {
+      .header img {
+        height: 60px;
+      }
+
+      .header h2 {
+        font-size: 20px;
+      }
+
+      .container {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <img src="/static/img/logo_inteinsa.png" alt="Logo INTEINSA">
+  <h2>Asignar Activo</h2>
+</div>
+
+<div class="container">
+  {% if success %}
+    <div class="success">✅ Activo asignado correctamente.</div>
+  {% endif %}
+
+  <button class="btn" onclick="startScan()">📷 Escanear Código</button>
+  <div id="reader"></div>
+
+  <form method="post">
+    <input type="text" name="codigo" placeholder="Código del producto" required>
+    <input type="text" name="modelo" placeholder="Modelo del producto">
+    <input type="text" name="serial" placeholder="Serial del producto">
+    <input type="text" name="usuario" placeholder="Nombre del usuario" required>
+    <input type="text" name="equipo" placeholder="Código del equipo" required>
+    <textarea name="observaciones" rows="3" placeholder="Observaciones..."></textarea>
+    <button class="btn" type="submit">Asignar</button>
+  </form>
+
+  <div class="nav-links">
+    <a href="/">🏠 Inicio</a> |
+    <a href="/asignar">🔁 Asignar otro</a> |
+    <a href="/buscar">🔍 Buscar</a>
+  </div>
+</div>
+
+<footer>
+    <hr>
+    <div>
+      &copy; 2025 <strong style="color: #ffffff;">INTEINSA</strong> – Desarrollado por el <strong style="color: #ffffff;">Área de Sistemas</strong><br>
+      <span style="font-size: 13px; color: #aaaaaa;">Todos los derechos reservados.</span>
+    </div>
+  </footer>
+
+<script>
+function interpretarQR(texto) {
+  const campos = {
+    'CÓDIGO': 'codigo',
+    'MODELO': 'modelo',
+    'SERIAL': 'serial'
+  };
+
+  texto.split('\n').forEach(linea => {
+    const [clave, valor] = linea.split(':').map(s => s.trim());
+    const idCampo = campos[clave?.toUpperCase()];
+    if (idCampo && valor) {
+      const input = document.querySelector(`[name="${idCampo}"]`);
+      if (input) input.value = valor;
+    }
+  });
+}
+
+function startScan() {
+  const html5QrCode = new Html5Qrcode("reader");
+  const config = { fps: 10, qrbox: 250 };
+
+  html5QrCode.start(
+    { facingMode: "environment" },
+    config,
+    (decodedText) => {
+      interpretarQR(decodedText);
+      html5QrCode.stop().then(() => {
+        document.getElementById("reader").innerHTML = "";
+      }).catch(err => console.error("Stop error:", err));
+    },
+    () => {}
+  ).catch(err => {
+    alert("⚠️ Error al acceder a la cámara.\n\n" + err);
+  });
+}
+</script>
+
+</body>
+</html>
